@@ -9,5 +9,6 @@ db.json
 test_*.png
 .vercel/
 .astro/
-
-.vercel
+.wrangler/
+screenshot_*
+setup_test.py
