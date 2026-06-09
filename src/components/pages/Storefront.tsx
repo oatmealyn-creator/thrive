@@ -96,7 +96,7 @@ export default function Storefront() {
             {profile.store_name || profile.name}
           </h1>
           {profile.bio && (
-            <p className="mt-5 text-[#C4CFB9] text-base sm:text-lg max-w-xl leading-relaxed">{profile.bio}</p>
+            <p className="mt-5 text-[#C4CFB9] text-base sm:text-lg max-w-[36rem] leading-relaxed">{profile.bio}</p>
           )}
           <div className="mt-6 flex items-center gap-3 text-sm text-[#C4CFB9]">
             {profile.picture ? (
@@ -261,7 +261,7 @@ export default function Storefront() {
               animate={{ y: 0 }}
               exit={{ y: 100 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-background rounded-t-3xl sm:rounded-3xl w-full sm:max-w-md p-6"
+              className="bg-background rounded-t-3xl sm:rounded-3xl w-full sm:max-w-[28rem] p-6"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="font-display text-2xl text-foreground">Your order</div>

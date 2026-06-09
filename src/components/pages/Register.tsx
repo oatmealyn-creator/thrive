@@ -49,7 +49,7 @@ export default function Register() {
         <span className="font-display text-2xl tracking-tight text-foreground">Plotly</span>
       </Link>
 
-      <div className="w-full max-w-sm">
+      <div className="w-full max-w-[24rem]">
         <h1 className="font-display text-3xl text-foreground text-center">Start growing</h1>
         <p className="text-muted-foreground text-sm text-center mt-2">Create your free storefront</p>
 

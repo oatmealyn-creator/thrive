@@ -42,7 +42,7 @@ export default function Landing() {
             <br />
             <span className="text-primary italic font-normal">Sell it from your phone.</span>
           </h1>
-          <p className="mt-8 text-lg text-muted-foreground max-w-md leading-relaxed">
+          <p className="mt-8 text-lg text-muted-foreground max-w-[28rem] leading-relaxed">
             Snap a photo, set a price, share your link. Customers order through WhatsApp — no
             apps, no fees, no friction.
           </p>
@@ -92,7 +92,7 @@ export default function Landing() {
 
       <section id="how" className="px-6 sm:px-10 lg:px-16 py-20 border-t border-border">
         <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-bold mb-3">How it works</div>
-        <h2 className="font-display text-4xl sm:text-5xl text-foreground max-w-xl leading-tight mb-16">
+        <h2 className="font-display text-4xl sm:text-5xl text-foreground max-w-[36rem] leading-tight mb-16">
           From your backyard to their doorstep in four steps.
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -121,7 +121,7 @@ export default function Landing() {
 
       <section className="px-6 sm:px-10 lg:px-16 pb-24">
         <div className="bg-foreground text-background rounded-[2.5rem] p-10 sm:p-16 relative overflow-hidden">
-          <div className="relative z-10 max-w-xl">
+          <div className="relative z-10 max-w-[36rem]">
             <h3 className="font-display text-4xl sm:text-5xl leading-tight">
               Your garden, your store, your rules.
             </h3>

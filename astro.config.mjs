@@ -10,8 +10,5 @@ export default defineConfig({
   integrations: [react(), mcp()],
   vite: {
     plugins: [tailwindcss()],
-    ssr: {
-      noExternal: ["react-router-dom", "react-router"],
-    },
   },
 });

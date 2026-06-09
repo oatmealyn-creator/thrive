@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -126,7 +127,7 @@ export default function AddItemModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg bg-background border-border" data-testid="add-item-modal">
+      <DialogContent className="max-w-[32rem] bg-background border-border" data-testid="add-item-modal">
         <DialogHeader>
           <DialogTitle className="font-display text-2xl text-foreground">
             {editingItem ? "Edit item" : "Add a new item"}
@@ -156,7 +157,18 @@ export default function AddItemModal({
           ) : (
             <div className="relative rounded-2xl overflow-hidden border border-border">
               <img src={imageB64} alt="preview" className="w-full h-56 object-cover" />
-              {detecting && <div className="absolute inset-0 bg-black/20 animate-pulse opacity-70 pointer-events-none" />}
+              {detecting && (
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  <div className="absolute inset-0 bg-black/20" />
+                  <motion.div
+                    initial={{ top: "0%" }}
+                    animate={{ top: "100%" }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                    className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent shadow-lg"
+                    style={{ boxShadow: "0 0 12px var(--color-primary), 0 0 30px var(--color-primary)" }}
+                  />
+                </div>
+              )}
               <button
                 onClick={() => { setImageB64(""); setAiConfidence(null); }}
                 className="absolute top-3 right-3 bg-black/60 text-white rounded-full p-1.5 hover:bg-black/80"

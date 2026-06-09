@@ -107,7 +107,7 @@ export default function Dashboard() {
           <h1 className="font-display text-4xl sm:text-5xl text-foreground" data-testid="dashboard-heading">
             Hi {user?.name?.split(" ")[0] || "gardener"}.
           </h1>
-          <div className="mt-5 flex flex-wrap items-center gap-3 bg-card border border-border rounded-2xl px-4 py-3 max-w-2xl">
+          <div className="mt-5 flex flex-wrap items-center gap-3 bg-card border border-border rounded-2xl px-4 py-3 max-w-[42rem]">
             <Share2 className="w-4 h-4 text-primary flex-shrink-0" />
             <div className="text-xs uppercase tracking-widest text-muted-foreground">Your link</div>
             <div className="font-mono text-sm text-foreground truncate flex-1 min-w-0" data-testid="storefront-link-text">
