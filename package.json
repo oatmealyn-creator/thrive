@@ -5,14 +5,14 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "deploy": "npm run build && powershell -Command \"Copy-Item dist\\server\\* dist\\client\\ -Recurse -Force; Move-Item dist\\client\\entry.mjs dist\\client\\_worker.js -Force; Remove-Item -Recurse -Force .wrangler; Remove-Item dist\\client\\wrangler.json -Force; Remove-Item dist\\server\\wrangler.json -Force\" && npx wrangler pages deploy dist/client --project-name=plotly --branch master",
+    "deploy": "npm run build && npx vercel --prod",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
-    "@astrojs/cloudflare": "^13.7.0",
     "@astrojs/react": "^5.0.7",
+    "@astrojs/vercel": "^10.0.8",
     "@radix-ui/react-dialog": "^1.1.16",
     "@radix-ui/react-label": "^2.1.9",
     "@radix-ui/react-select": "^2.3.0",

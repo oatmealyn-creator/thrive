@@ -112,7 +112,7 @@ export default function Storefront() {
         <Sprout className="absolute -right-6 -bottom-6 w-24 h-24 sm:w-36 sm:h-36 text-primary/30" strokeWidth={0.6} />
       </header>
 
-      <main className="px-5 sm:px-10 max-w-6xl mx-auto -mt-8">
+      <main className="px-5 sm:px-10 max-w-6xl mx-auto mt-4">
         <div className="flex gap-2 overflow-x-auto no-scrollbar py-2">
           {CATEGORIES.map((c) => (
             <button
