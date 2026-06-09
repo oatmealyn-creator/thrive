@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Figtree:wght@300..700&family=Outfit:wght@300..700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --color-background: #f8f6f0;
+  --color-foreground: #2c332a;
+  --color-primary: #4a6741;
+  --color-primary-foreground: #ffffff;
+  --color-accent: #c8795a;
+  --color-card: #ffffff;
+  --color-border: #e2dec6;
+  --color-muted-foreground: #5c665a;
+  --color-secondary: #f1efe7;
+  --color-destructive: #b84a4a;
+
+  --font-display: "Outfit", sans-serif;
+  --font-sans: "Figtree", sans-serif;
+
+  --radius-sm: calc(0.875rem - 4px);
+  --radius-md: calc(0.875rem - 2px);
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
