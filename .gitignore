@@ -7,3 +7,5 @@ dist/
 *.log
 db.json
 test_*.png
+.vercel/
+.astro/
