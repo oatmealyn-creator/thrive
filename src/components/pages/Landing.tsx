@@ -28,16 +28,16 @@ export default function Landing() {
         </div>
       </header>
 
-      <section className="px-6 sm:px-10 lg:px-16 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center pt-6 pb-20">
+      <section className="px-6 sm:px-10 lg:px-16 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center pt-6 pb-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground font-bold mb-6">
+          <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-bold mb-6">
             For independent gardeners
           </div>
-          <h1 className="font-display font-light text-5xl sm:text-6xl lg:text-7xl leading-[0.95] tracking-tight">
+          <h1 className="font-display font-light text-5xl sm:text-6xl lg:text-7xl leading-[1.1] tracking-tight">
             Grow what you love.
             <br />
             <span className="text-primary italic font-normal">Sell it from your phone.</span>
@@ -76,8 +76,8 @@ export default function Landing() {
             />
             <div className="absolute inset-x-6 bottom-6 bg-white/90 backdrop-blur-xl rounded-2xl p-5 border border-white/40 shadow-lg">
               <div className="flex items-center justify-between">
-                <div>
-                  <div className="font-display text-lg text-foreground">Mango Sapling</div>
+                <div className="min-w-0">
+                  <div className="font-display text-lg text-foreground truncate">Mango Sapling</div>
                   <div className="text-xs uppercase tracking-widest text-muted-foreground mt-1">Plants</div>
                 </div>
                 <div className="text-2xl font-display text-primary">$24</div>
@@ -91,11 +91,11 @@ export default function Landing() {
       </section>
 
       <section id="how" className="px-6 sm:px-10 lg:px-16 py-20 border-t border-border">
-        <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground font-bold mb-3">How it works</div>
+        <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-bold mb-3">How it works</div>
         <h2 className="font-display text-4xl sm:text-5xl text-foreground max-w-xl leading-tight mb-16">
           From your backyard to their doorstep in four steps.
         </h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
             { icon: Camera, t: "Snap a photo", d: "Take a picture of any plant, pot or tool you have." },
             { icon: Sprout, t: "Set a price", d: "Add a name, price and category — done in seconds." },

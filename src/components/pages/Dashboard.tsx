@@ -103,7 +103,7 @@ export default function Dashboard() {
 
       <main className="px-5 sm:px-10 max-w-7xl mx-auto pb-32">
         <section className="pt-8 pb-6">
-          <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground font-bold mb-2">Your garden</div>
+          <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-bold mb-2">Your garden</div>
           <h1 className="font-display text-4xl sm:text-5xl text-foreground" data-testid="dashboard-heading">
             Hi {user?.name?.split(" ")[0] || "gardener"}.
           </h1>
@@ -150,7 +150,7 @@ export default function Dashboard() {
 
         <section className="mt-6">
           {loading ? (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="rounded-2xl h-56 bg-secondary animate-pulse" />
               ))}
@@ -168,7 +168,7 @@ export default function Dashboard() {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <AnimatePresence>
                 {filtered.map((item, i) => (
                   <motion.div
@@ -196,7 +196,7 @@ export default function Dashboard() {
                     <div className="p-3">
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0">
-                          <div className="font-display text-base text-foreground truncate">{item.name}</div>
+                          <div className="font-display text-base text-foreground break-words">{item.name}</div>
                           <div className="text-xs text-muted-foreground mt-0.5">Stock: {item.stock}</div>
                         </div>
                         <div className="font-display text-lg text-primary">${item.price}</div>

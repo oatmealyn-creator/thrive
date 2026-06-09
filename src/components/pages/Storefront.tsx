@@ -106,7 +106,7 @@ export default function Storefront() {
                 <Sprout className="w-4 h-4 text-white" />
               </div>
             )}
-            <span>Grown by {profile.name}</span>
+            <span className="min-w-0 break-words">Grown by {profile.name}</span>
           </div>
         </div>
         <Sprout className="absolute -right-8 -bottom-8 w-64 h-64 text-primary/30" strokeWidth={0.6} />
@@ -163,7 +163,7 @@ export default function Storefront() {
                   <div className="p-4">
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
-                        <div className="font-display text-lg text-foreground truncate">{item.name}</div>
+                        <div className="font-display text-lg text-foreground break-words">{item.name}</div>
                         {item.description && (
                           <div className="text-xs text-muted-foreground mt-1 line-clamp-2">{item.description}</div>
                         )}
@@ -276,7 +276,7 @@ export default function Storefront() {
                       {l.item.image_base64 && <img src={l.item.image_base64} className="w-full h-full object-cover" alt="" />}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="font-display text-base text-foreground truncate">{l.item.name}</div>
+                      <div className="font-display text-base text-foreground break-words">{l.item.name}</div>
                       <div className="text-xs text-muted-foreground">${l.item.price} × {l.qty}</div>
                     </div>
                     <div className="flex items-center gap-1">
