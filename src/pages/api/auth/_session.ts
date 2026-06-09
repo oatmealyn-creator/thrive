@@ -1,7 +1,6 @@
-import type { Request } from "astro";
 import type { DBStructure, User } from "@/lib/db-json";
 
-export function getSessionUser(req: Request, db: DBStructure): User | null {
+export function getSessionUser(req: { headers: { get: (name: string) => string | null } }, db: DBStructure): User | null {
   let sessionId = "";
 
   const authHeader = req.headers.get("authorization") || "";
@@ -19,7 +18,7 @@ export function getSessionUser(req: Request, db: DBStructure): User | null {
 
   if (!sessionId) return null;
 
-  const session = db.sessions.find((s) => s.session_id === sessionId);
+  const session = db.sessions.find((s: { session_id: string }) => s.session_id === sessionId);
   if (!session) return null;
-  return db.users.find((u) => u.user_id === session.user_id) || null;
+  return db.users.find((u: { user_id: string }) => u.user_id === session.user_id) || null;
 }

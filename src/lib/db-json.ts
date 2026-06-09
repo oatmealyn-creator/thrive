@@ -3,6 +3,7 @@ import * as path from "node:path";
 
 export interface User {
   user_id: string;
+  username: string;
   email: string;
   password_hash: string;
   name: string;
@@ -31,7 +32,7 @@ export interface Session {
   created_at: string;
 }
 
-interface DBStructure {
+export interface DBStructure {
   users: User[];
   items: Item[];
   sessions: Session[];

@@ -26,9 +26,11 @@ export const POST: APIRoute = async ({ request }) => {
     const password_hash = await bcrypt.hash(password, 10);
     const user_id = `user_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
     const displayName = name || email.split("@")[0];
+    const username = email.split("@")[0].replace(/[^a-zA-Z0-9_-]/g, "").toLowerCase() + "_" + Math.random().toString(36).slice(2, 6);
 
     const user = {
       user_id,
+      username,
       email,
       password_hash,
       name: displayName,

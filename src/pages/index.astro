@@ -3,10 +3,13 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Plotly — Harvest Catalog">
-  <main class="flex min-h-screen items-center justify-center">
-    <div class="text-center">
-      <h1 class="text-4xl font-bold tracking-tight text-primary">Plotly</h1>
-      <p class="mt-2 text-muted-foreground">Your gardening storefront.</p>
+  <div id="root" class="contents">
+    <div class="min-h-screen flex items-center justify-center bg-background">
+      <div class="text-muted-foreground font-display text-lg">Loading…</div>
     </div>
-  </main>
+  </div>
 </Layout>
+
+<script>
+  import("../main.tsx");
+</script>
