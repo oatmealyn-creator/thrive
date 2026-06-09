@@ -9,3 +9,5 @@ db.json
 test_*.png
 .vercel/
 .astro/
+
+.vercel
