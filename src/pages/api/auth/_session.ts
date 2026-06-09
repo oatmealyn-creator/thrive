@@ -1,4 +1,4 @@
-import type { DBStructure, User } from "@/lib/db-json";
+import type { DBStructure, User, Session } from "@/lib/db-json";
 
 export function getSessionUser(req: { headers: { get: (name: string) => string | null } }, db: DBStructure): User | null {
   let sessionId = "";

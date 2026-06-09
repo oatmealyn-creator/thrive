@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "user_id": "user_1781026808183_9kse2e",
+      "username": "test_9kz4",
+      "email": "test@garden.com",
+      "password_hash": "$2b$10$ICTDG8XqaFwuxwoq2wsi..uxOv7ZThgWdZ0ri53Zu.hqjryxgk4Ii",
+      "name": "Test Gardener",
+      "store_name": "Test Gardener's Store",
+      "bio": "Backyard gardener. Growing and sharing.",
+      "whatsapp_number": "",
+      "picture": "",
+      "created_at": "2026-06-09T17:40:08.183Z"
+    }
+  ],
+  "items": [],
+  "sessions": [
+    {
+      "session_id": "sess_1781026808183_sfdyo871",
+      "user_id": "user_1781026808183_9kse2e",
+      "created_at": "2026-06-09T17:40:08.184Z"
+    }
+  ]
+}
