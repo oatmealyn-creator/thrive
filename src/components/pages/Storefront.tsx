@@ -57,11 +57,11 @@ export default function Storefront() {
       return;
     }
     const lines = cartLines
-      .map((l) => `• ${l.qty} × ${l.item.name} — $${(l.item.price * l.qty).toFixed(2)}`)
+      .map((l) => `• ${l.qty} × ${l.item.name} — ₹${(l.item.price * l.qty).toFixed(2)}`)
       .join("\n");
     const text =
       `Hi ${data.profile.name || ""}! I'd like to order from ${data.profile.store_name || "your garden"}:\n\n` +
-      `${lines}\n\nTotal: $${totalPrice.toFixed(2)}\n\nLink: ${window.location.href}`;
+      `${lines}\n\nTotal: ₹${totalPrice.toFixed(2)}\n\nLink: ${window.location.href}`;
     const url = `https://wa.me/${wa.replace(/^\+/, "")}?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank");
   };
@@ -89,27 +89,27 @@ export default function Storefront() {
 
   return (
     <div className="min-h-screen bg-background pb-32">
-      <header className="bg-foreground text-background px-6 sm:px-10 lg:px-16 pt-10 pb-16 sm:pb-20 rounded-b-[2rem] relative overflow-hidden">
+      <header className="bg-foreground text-background px-5 sm:px-10 lg:px-16 pt-3 pb-4 sm:pt-6 sm:pb-8 rounded-b-[2rem] relative overflow-hidden">
         <div className="max-w-4xl">
-          <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground font-bold">Storefront</div>
-          <h1 className="font-display text-4xl sm:text-6xl mt-3 leading-none" data-testid="storefront-title">
+          <div className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-muted-foreground font-bold">Storefront</div>
+          <h1 className="font-display text-2xl sm:text-5xl mt-1 sm:mt-2 leading-none" data-testid="storefront-title">
             {profile.store_name || profile.name}
           </h1>
           {profile.bio && (
-            <p className="mt-5 text-[#C4CFB9] text-base sm:text-lg max-w-[36rem] leading-relaxed">{profile.bio}</p>
+            <p className="mt-1 sm:mt-3 text-[#C4CFB9] text-xs sm:text-lg max-w-[36rem] leading-relaxed">{profile.bio}</p>
           )}
-          <div className="mt-6 flex items-center gap-3 text-sm text-[#C4CFB9]">
+          <div className="mt-2 sm:mt-4 flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-[#C4CFB9]">
             {profile.picture ? (
-              <img src={profile.picture} alt="" className="w-9 h-9 rounded-full border border-primary" />
+              <img src={profile.picture} alt="" className="w-7 h-7 sm:w-9 sm:h-9 rounded-full border border-primary" />
             ) : (
-              <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center">
-                <Sprout className="w-4 h-4 text-white" />
+              <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-primary flex items-center justify-center">
+                <Sprout className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
               </div>
             )}
             <span className="min-w-0 break-words">Grown by {profile.name}</span>
           </div>
         </div>
-        <Sprout className="absolute -right-8 -bottom-8 w-64 h-64 text-primary/30" strokeWidth={0.6} />
+        <Sprout className="absolute -right-6 -bottom-6 w-24 h-24 sm:w-36 sm:h-36 text-primary/30" strokeWidth={0.6} />
       </header>
 
       <main className="px-5 sm:px-10 max-w-6xl mx-auto -mt-8">
@@ -168,7 +168,7 @@ export default function Storefront() {
                           <div className="text-xs text-muted-foreground mt-1 line-clamp-2">{item.description}</div>
                         )}
                       </div>
-                      <div className="font-display text-xl text-primary flex-shrink-0">${item.price}</div>
+                      <div className="font-display text-xl text-primary flex-shrink-0">₹{item.price}</div>
                     </div>
                     <div className="mt-4">
                       {qty === 0 ? (
@@ -229,7 +229,7 @@ export default function Storefront() {
                   </div>
                   <div>
                     <div className="text-xs uppercase tracking-widest text-muted-foreground">Your order</div>
-                    <div className="font-display text-lg text-foreground">${totalPrice.toFixed(2)}</div>
+                    <div className="font-display text-lg text-foreground">₹{totalPrice.toFixed(2)}</div>
                   </div>
                 </button>
                 <button
@@ -277,7 +277,7 @@ export default function Storefront() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="font-display text-base text-foreground break-words">{l.item.name}</div>
-                      <div className="text-xs text-muted-foreground">${l.item.price} × {l.qty}</div>
+                      <div className="text-xs text-muted-foreground">₹{l.item.price} × {l.qty}</div>
                     </div>
                     <div className="flex items-center gap-1">
                       <button onClick={() => removeFromCart(l.item.item_id)} className="w-7 h-7 rounded-full border border-border flex items-center justify-center"><Minus className="w-3 h-3" /></button>
@@ -289,7 +289,7 @@ export default function Storefront() {
               </div>
               <div className="flex items-center justify-between mt-5 pt-4 border-t border-border">
                 <div className="text-muted-foreground">Total</div>
-                <div className="font-display text-2xl text-foreground">${totalPrice.toFixed(2)}</div>
+                <div className="font-display text-2xl text-foreground">₹{totalPrice.toFixed(2)}</div>
               </div>
               <button
                 onClick={checkoutWhatsApp}
