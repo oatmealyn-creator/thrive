@@ -12,3 +12,5 @@ test_*.png
 .wrangler/
 screenshot_*
 setup_test.py
+
+.vercel

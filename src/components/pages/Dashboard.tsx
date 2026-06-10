@@ -83,12 +83,46 @@ export default function Dashboard() {
             >
               <Plus className="w-4 h-4" /> Add Item
             </button>
+            <AnimatePresence>
+              {!user?.whatsapp_number && (
+                <motion.div
+                  initial={{ opacity: 0, x: 10, scale: 0.8 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: 10, scale: 0.8 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="items-center gap-1.5 whitespace-nowrap hidden sm:flex"
+                >
+                  <span className="text-[11px] font-medium text-accent">Add your WhatsApp number</span>
+                  <motion.svg
+                    animate={{ x: [0, 3, 0] }}
+                    transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                    width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-accent flex-shrink-0"
+                  >
+                    <path d="M5 12h14" />
+                    <path d="m12 5 7 7-7 7" />
+                  </motion.svg>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <button
               onClick={() => setShowSettings(true)}
-              className="p-2.5 rounded-full hover:bg-secondary"
+              className="relative p-2.5 rounded-full hover:bg-secondary"
               aria-label="Settings"
             >
               <Settings className="w-5 h-5 text-foreground" />
+              <AnimatePresence>
+                {!user?.whatsapp_number && (
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                    className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-accent rounded-full"
+                  >
+                    <span className="absolute inset-0 rounded-full bg-accent animate-ping opacity-60" />
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </button>
             <button
               onClick={logout}
@@ -137,7 +171,7 @@ export default function Dashboard() {
               key={c}
               onClick={() => setFilter(c)}
               data-testid={`filter-${c.toLowerCase()}`}
-              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-transform active:scale-90 ${
                 filter === c
                   ? "bg-foreground text-background"
                   : "bg-card border border-border text-muted-foreground hover:border-[#8B9E7B]"
@@ -150,7 +184,7 @@ export default function Dashboard() {
 
         <section className="mt-6">
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="rounded-2xl h-56 bg-secondary animate-pulse" />
               ))}
@@ -168,7 +202,7 @@ export default function Dashboard() {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               <AnimatePresence>
                 {filtered.map((item, i) => (
                   <motion.div
