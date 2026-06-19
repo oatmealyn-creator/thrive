@@ -196,7 +196,7 @@ export default function AddItemModal({
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Label className="text-xs uppercase tracking-widest text-muted-foreground">Price ($)</Label>
+              <Label className="text-xs uppercase tracking-widest text-muted-foreground">Price (₹)</Label>
               <Input type="number" min="0" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="24" className="bg-card mt-1" data-testid="item-price-input" />
             </div>
             <div>

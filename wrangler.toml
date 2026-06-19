@@ -1,4 +1,15 @@
-name = "plotly"
+name = "thrive"
 pages_build_output_dir = "dist/client"
 compatibility_date = "2025-06-10"
 compatibility_flags = ["nodejs_compat"]
+
+# ── D1 database ─────────────────────────────────────────────────────────────
+# One-time setup (the command prints the real database_id — paste it below):
+#   npx wrangler d1 create thrive-db
+#
+# Then apply the schema:
+#   npx wrangler d1 execute thrive-db --file=migrations/0001_init.sql --remote
+[[d1_databases]]
+binding = "DB"
+database_name = "thrive-db"
+database_id = "fb499926-1a84-4d0a-a36f-e1078e0ff86f"

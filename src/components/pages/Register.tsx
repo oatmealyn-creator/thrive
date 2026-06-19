@@ -19,8 +19,8 @@ export default function Register() {
       toast.error("Please fill in all fields");
       return;
     }
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters");
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters");
       return;
     }
     setLoading(true);
@@ -46,7 +46,7 @@ export default function Register() {
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6">
       <Link to="/" className="flex items-center gap-2 mb-12">
         <Sprout className="w-7 h-7 text-primary" strokeWidth={1.5} />
-        <span className="font-display text-2xl tracking-tight text-foreground">Plotly</span>
+        <span className="font-display text-2xl tracking-tight text-foreground">Thrive</span>
       </Link>
 
       <div className="w-full max-w-[24rem]">
@@ -86,7 +86,7 @@ export default function Register() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1 w-full h-10 rounded-md border border-border bg-card px-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-              placeholder="At least 6 characters"
+              placeholder="At least 8 characters"
               data-testid="register-password-input"
             />
           </div>

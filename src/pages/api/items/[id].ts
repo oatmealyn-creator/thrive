@@ -1,64 +1,71 @@
 import type { APIRoute } from "astro";
-import { supabase, updateItem, deleteItem } from "@/lib/supabase";
+import { getDB, getItemForUser, updateItem, deleteItem, type Category } from "@/lib/db";
 import { getSessionUser } from "../auth/_session";
+import { json } from "@/lib/response";
+
+const VALID_CATEGORIES: Category[] = ["Plants", "Pots", "Tools", "Seeds", "Accessories"];
 
 export const PUT: APIRoute = async ({ request, params }) => {
-  const user = await getSessionUser(request);
-  if (!user) {
-    return new Response(JSON.stringify({ detail: "Not authenticated" }), {
-      status: 401,
-      headers: { "Content-Type": "application/json" },
-    });
+  let db;
+  try {
+    db = getDB();
+  } catch {
+    return json({ detail: "Database not configured" }, 500);
   }
 
-  const { data: item } = await supabase.from("items").select("*").eq("item_id", params.id).eq("user_id", user.user_id).single();
-  if (!item) {
-    return new Response(JSON.stringify({ detail: "Item not found" }), {
-      status: 404,
-      headers: { "Content-Type": "application/json" },
-    });
+  const user = await getSessionUser(request.headers);
+  if (!user) return json({ detail: "Not authenticated" }, 401);
+
+  const itemId = params.id;
+  if (!itemId) return json({ detail: "Item id is required" }, 400);
+
+  const existing = await getItemForUser(db, itemId, user.user_id);
+  if (!existing) return json({ detail: "Item not found" }, 404);
+
+  try {
+    const body = await request.json();
+    const updates: Record<string, unknown> = {};
+
+    if (typeof body?.name === "string") updates.name = body.name.trim().slice(0, 120);
+    if (body?.price !== undefined) {
+      const p = typeof body.price === "number" ? body.price : parseFloat(String(body.price));
+      if (isNaN(p) || p < 0) return json({ detail: "A valid price is required" }, 400);
+      updates.price = p;
+    }
+    if (body?.category !== undefined) {
+      updates.category = VALID_CATEGORIES.includes(body.category) ? body.category : "Plants";
+    }
+    if (typeof body?.description === "string") updates.description = body.description.slice(0, 1000);
+    if (body?.stock !== undefined) {
+      updates.stock = Math.max(0, parseInt(String(body.stock), 10) || 0);
+    }
+    if (typeof body?.image_base64 === "string") updates.image_base64 = body.image_base64.slice(0, 800_000);
+
+    if (Object.keys(updates).length > 0) await updateItem(db, itemId, updates);
+    return json({ ...existing, ...updates }, 200);
+  } catch (err) {
+    console.error("Update item error:", err);
+    return json({ detail: "Could not update item" }, 500);
   }
-
-  const body = await request.json();
-  const updates: Record<string, any> = {};
-  if (body.name !== undefined) updates.name = body.name;
-  if (body.price !== undefined) updates.price = parseFloat(body.price);
-  if (body.category !== undefined) updates.category = body.category;
-  if (body.description !== undefined) updates.description = body.description;
-  if (body.stock !== undefined) updates.stock = parseInt(body.stock, 10) || 0;
-  if (body.image_base64 !== undefined) updates.image_base64 = body.image_base64;
-
-  if (Object.keys(updates).length > 0) {
-    await updateItem(params.id!, updates);
-  }
-
-  const merged = { ...item, ...updates } as any;
-  return new Response(JSON.stringify(merged), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
 };
 
 export const DELETE: APIRoute = async ({ request, params }) => {
-  const user = await getSessionUser(request);
-  if (!user) {
-    return new Response(JSON.stringify({ detail: "Not authenticated" }), {
-      status: 401,
-      headers: { "Content-Type": "application/json" },
-    });
+  let db;
+  try {
+    db = getDB();
+  } catch {
+    return json({ detail: "Database not configured" }, 500);
   }
 
-  const { data: item } = await supabase.from("items").select("item_id").eq("item_id", params.id).eq("user_id", user.user_id).single();
-  if (!item) {
-    return new Response(JSON.stringify({ detail: "Item not found" }), {
-      status: 404,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
+  const user = await getSessionUser(request.headers);
+  if (!user) return json({ detail: "Not authenticated" }, 401);
 
-  await deleteItem(params.id!);
-  return new Response(JSON.stringify({ success: true }), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
+  const itemId = params.id;
+  if (!itemId) return json({ detail: "Item id is required" }, 400);
+
+  const existing = await getItemForUser(db, itemId, user.user_id);
+  if (!existing) return json({ detail: "Item not found" }, 404);
+
+  await deleteItem(db, itemId);
+  return json({ success: true }, 200);
 };

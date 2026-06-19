@@ -1,18 +1,18 @@
 import type { APIRoute } from "astro";
+import { getDB, sanitizeUser } from "@/lib/db";
 import { getSessionUser } from "./_session";
+import { json } from "@/lib/response";
 
 export const GET: APIRoute = async ({ request }) => {
-  const user = await getSessionUser(request);
-  if (!user) {
-    return new Response(JSON.stringify({ detail: "Not authenticated" }), {
-      status: 401,
-      headers: { "Content-Type": "application/json" },
-    });
+  try {
+    getDB();
+  } catch {
+    return json({ detail: "Database not configured" }, 500);
   }
 
-  const { password_hash: _, ...safeUser } = user;
-  return new Response(JSON.stringify(safeUser), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
+  const user = await getSessionUser(request.headers);
+  if (!user) {
+    return json({ detail: "Not authenticated" }, 401);
+  }
+  return json(sanitizeUser(user), 200);
 };

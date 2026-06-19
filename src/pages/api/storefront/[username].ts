@@ -1,22 +1,25 @@
 import type { APIRoute } from "astro";
-import { getStorefront } from "@/lib/supabase";
+import { getDB, getUserByUsername, getUserItems } from "@/lib/db";
+import { json } from "@/lib/response";
 
 export const GET: APIRoute = async ({ params }) => {
   const { username } = params;
   if (!username) {
-    return new Response(JSON.stringify({ detail: "Username is required" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
+    return json({ detail: "Username is required" }, 400);
   }
 
-  const { user, items } = await getStorefront(username);
-  if (!user) {
-    return new Response(JSON.stringify({ detail: "Storefront not found" }), {
-      status: 404,
-      headers: { "Content-Type": "application/json" },
-    });
+  let db;
+  try {
+    db = getDB();
+  } catch {
+    return json({ detail: "Database not configured" }, 500);
   }
+
+  const user = await getUserByUsername(db, username);
+  if (!user) {
+    return json({ detail: "Storefront not found" }, 404);
+  }
+  const items = await getUserItems(db, user.user_id);
 
   const { password_hash: _, ...safeProfile } = user;
 
@@ -25,3 +28,4 @@ export const GET: APIRoute = async ({ params }) => {
     headers: { "Content-Type": "application/json" },
   });
 };
+

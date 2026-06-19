@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from "react";
-import type { User } from "@/lib/db-json";
+import type { User } from "@/lib/db";
 import { apiFetch } from "@/lib/api";
 
 interface AuthContextValue {

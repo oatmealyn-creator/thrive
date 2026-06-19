@@ -73,7 +73,7 @@ export default function Dashboard() {
         <div className="px-5 sm:px-10 py-4 flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center gap-2">
             <Sprout className="w-6 h-6 text-primary" strokeWidth={1.5} />
-            <span className="font-display text-xl text-foreground">Plotly</span>
+            <span className="font-display text-xl text-foreground">Thrive</span>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -343,7 +343,7 @@ function SettingsModal({ open, onOpenChange, user, onSaved }: {
           <div>
             <Label className="text-xs uppercase tracking-widest text-muted-foreground">Username (URL slug)</Label>
             <Input value={username} onChange={(e) => setUsername(e.target.value)} className="bg-card mt-1" />
-            <div className="text-xs text-muted-foreground mt-1">plotly.app/g/{username || "your-name"}</div>
+            <div className="text-xs text-muted-foreground mt-1">thrive.pages.dev/g/{username || "your-name"}</div>
           </div>
           <div>
             <Label className="text-xs uppercase tracking-widest text-muted-foreground">WhatsApp number (with country code)</Label>

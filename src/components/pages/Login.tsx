@@ -40,7 +40,7 @@ export default function Login() {
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6">
       <Link to="/" className="flex items-center gap-2 mb-12">
         <Sprout className="w-7 h-7 text-primary" strokeWidth={1.5} />
-        <span className="font-display text-2xl tracking-tight text-foreground">Plotly</span>
+        <span className="font-display text-2xl tracking-tight text-foreground">Thrive</span>
       </Link>
 
       <div className="w-full max-w-[24rem]">

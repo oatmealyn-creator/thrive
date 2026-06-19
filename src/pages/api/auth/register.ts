@@ -1,72 +1,93 @@
 import type { APIRoute } from "astro";
-import { supabase, getUserByEmail, createUser, createSession } from "@/lib/supabase";
-import bcrypt from "bcryptjs";
+import {
+  getDB,
+  getUserByEmail,
+  getUserByUsername,
+  createUser,
+  createSession,
+  sanitizeUser,
+} from "@/lib/db";
+import {
+  hashPassword,
+  newSessionId,
+  newUserId,
+  normalizeEmail,
+  usernameFromEmail,
+  rateLimit,
+  clientKey,
+} from "@/lib/security";
+import { json, serverError } from "@/lib/response";
 
 export const POST: APIRoute = async ({ request }) => {
+  let db;
+  try {
+    db = getDB();
+  } catch {
+    return serverError("Database not configured");
+  }
+
+  if (!rateLimit(clientKey(request, "register"))) {
+    return json({ detail: "Too many attempts. Please slow down." }, 429);
+  }
+
   try {
     const body = await request.json();
-    const { email, password, name } = body;
+    const rawEmail = typeof body?.email === "string" ? body.email : "";
+    const password = typeof body?.password === "string" ? body.password : "";
+    const name = typeof body?.name === "string" ? body.name.trim() : "";
+    const email = normalizeEmail(rawEmail);
 
-    if (!email || !password) {
-      return new Response(JSON.stringify({ detail: "Email and password are required" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      return json({ detail: "A valid email is required" }, 400);
+    }
+    if (password.length < 8) {
+      return json({ detail: "Password must be at least 8 characters" }, 400);
+    }
+    if (!name) {
+      return json({ detail: "Your name is required" }, 400);
     }
 
-    const existing = await getUserByEmail(email);
-    if (existing) {
-      return new Response(JSON.stringify({ detail: "Email already registered" }), {
-        status: 409,
-        headers: { "Content-Type": "application/json" },
-      });
+    if (await getUserByEmail(db, email)) {
+      return json({ detail: "An account with this email already exists" }, 409);
     }
 
-    const password_hash = await bcrypt.hash(password, 10);
-    const user_id = `user_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-    const displayName = name || email.split("@")[0];
-    const username = email.split("@")[0].replace(/[^a-zA-Z0-9_-]/g, "").toLowerCase() + "_" + Math.random().toString(36).slice(2, 6);
+    // Generate a unique username slug, retrying on rare collisions.
+    let username = usernameFromEmail(email);
+    for (let i = 0; i < 5 && (await getUserByUsername(db, username)); i++) {
+      username = usernameFromEmail(email);
+    }
 
+    const user_id = newUserId();
+    const now = new Date().toISOString();
     const user = {
       user_id,
       username,
       email,
-      password_hash,
-      name: displayName,
-      store_name: `${displayName}'s Store`,
+      password_hash: await hashPassword(password),
+      name,
+      store_name: `${name}'s Garden`,
       bio: "Backyard gardener. Growing and sharing.",
       whatsapp_number: "",
       picture: "",
-      created_at: new Date().toISOString(),
+      created_at: now,
     };
 
-    await createUser(user);
+    await createUser(db, user);
 
-    const session_id = `sess_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
-    await createSession({
-      session_id,
-      user_id: user.user_id,
-      created_at: new Date().toISOString(),
-    });
+    const session_id = newSessionId();
+    await createSession(db, { session_id, user_id, created_at: now });
 
-    const { password_hash: _, ...safeUser } = user;
-
-    return new Response(
-      JSON.stringify({ user: safeUser, session_id }),
-      {
-        status: 201,
-        headers: {
-          "Content-Type": "application/json",
-          "Set-Cookie": `session_id=${session_id}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000`,
-        },
+    return new Response(JSON.stringify({ user: sanitizeUser(user), session_id }), {
+      status: 201,
+      headers: {
+        "Content-Type": "application/json",
+        "Set-Cookie": `session_id=${session_id}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`,
       },
-    );
+    });
   } catch (err) {
     console.error("Register error:", err);
-    const message = err instanceof Error ? err.message : String(err);
-    return new Response(JSON.stringify({ detail: "Registration failed", error: message }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return serverError("Registration failed");
   }
 };
+
+

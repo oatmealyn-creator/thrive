@@ -1,59 +1,56 @@
 import type { APIRoute } from "astro";
-import { supabase, createSession } from "@/lib/supabase";
-import bcrypt from "bcryptjs";
+import { getDB, getUserByEmail, createSession, sanitizeUser } from "@/lib/db";
+import { verifyPassword, newSessionId, normalizeEmail, rateLimit, clientKey } from "@/lib/security";
+import { json } from "@/lib/response";
 
 export const POST: APIRoute = async ({ request }) => {
+  let db;
+  try {
+    db = getDB();
+  } catch {
+    return json({ detail: "Database not configured" }, 500);
+  }
+
+  if (!rateLimit(clientKey(request, "login"))) {
+    return json({ detail: "Too many attempts. Please slow down." }, 429);
+  }
+
   try {
     const body = await request.json();
-    const { email, password } = body;
+    const rawEmail = typeof body?.email === "string" ? body.email : "";
+    const password = typeof body?.password === "string" ? body.password : "";
+    const email = normalizeEmail(rawEmail);
 
     if (!email || !password) {
-      return new Response(JSON.stringify({ detail: "Email and password are required" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
+      return json({ detail: "Email and password are required" }, 400);
     }
 
-    const { data: user } = await supabase.from("users").select("*").eq("email", email).single();
-    if (!user) {
-      return new Response(JSON.stringify({ detail: "Invalid email or password" }), {
-        status: 401,
-        headers: { "Content-Type": "application/json" },
-      });
+    const user = await getUserByEmail(db, email);
+    // Always run a verification to keep response timing roughly constant
+    // (mitigates user-enumeration via timing differences).
+    const ok = user ? await verifyPassword(password, user.password_hash) : await verifyPassword(password, DUMMY_HASH);
+
+    if (!user || !ok) {
+      return json({ detail: "Invalid email or password" }, 401);
     }
 
-    const valid = await bcrypt.compare(password, (user as any).password_hash);
-    if (!valid) {
-      return new Response(JSON.stringify({ detail: "Invalid email or password" }), {
-        status: 401,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
+    const session_id = newSessionId();
+    await createSession(db, { session_id, user_id: user.user_id, created_at: new Date().toISOString() });
 
-    const session_id = `sess_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
-    await createSession({
-      session_id,
-      user_id: (user as any).user_id,
-      created_at: new Date().toISOString(),
-    });
-
-    const { password_hash: _, ...safeUser } = user as any;
-
-    return new Response(
-      JSON.stringify({ user: safeUser, session_id }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-          "Set-Cookie": `session_id=${session_id}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000`,
-        },
+    return new Response(JSON.stringify({ user: sanitizeUser(user), session_id }), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Set-Cookie": `session_id=${session_id}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`,
       },
-    );
+    });
   } catch (err) {
     console.error("Login error:", err);
-    return new Response(JSON.stringify({ detail: "Login failed" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return json({ detail: "Login failed" }, 500);
   }
 };
+
+// A throwaway valid-format hash so the bogus verification path still does work
+// and takes a comparable amount of time as a real one.
+const DUMMY_HASH =
+  "pbkdf2$100000$00000000000000000000000000000000$0000000000000000000000000000000000000000000000000000000000000000";

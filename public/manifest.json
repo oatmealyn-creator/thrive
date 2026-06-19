@@ -1,6 +1,6 @@
 {
-  "name": "Plotly — Harvest Catalog",
-  "short_name": "Plotly",
+  "name": "Thrive — Harvest Catalog",
+  "short_name": "Thrive",
   "description": "A free gardening storefront. List plants, share your store, get orders via WhatsApp.",
   "start_url": "/",
   "display": "standalone",

@@ -10,7 +10,7 @@ export default function Landing() {
       <header className="px-6 sm:px-10 lg:px-16 py-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Sprout className="w-7 h-7 text-primary" strokeWidth={1.5} />
-          <span className="font-display text-2xl tracking-tight">Plotly</span>
+          <span className="font-display text-2xl tracking-tight">Thrive</span>
         </div>
         <div className="flex items-center gap-3">
           <Link
@@ -99,7 +99,7 @@ export default function Landing() {
           {[
             { icon: Camera, t: "Snap a photo", d: "Take a picture of any plant, pot or tool you have." },
             { icon: Sprout, t: "Set a price", d: "Add a name, price and category — done in seconds." },
-            { icon: Share2, t: "Share your link", d: "Your storefront lives at plotly.app/g/your-name." },
+            { icon: Share2, t: "Share your link", d: "Your storefront lives at thrive.pages.dev/g/your-name." },
             { icon: MessageCircle, t: "Get orders on WhatsApp", d: "Customers tap order — message lands in your chat." },
           ].map((s, i) => (
             <motion.div
@@ -140,7 +140,7 @@ export default function Landing() {
       </section>
 
       <footer className="px-6 sm:px-10 lg:px-16 py-8 border-t border-border text-sm text-muted-foreground">
-        © {new Date().getFullYear()} Plotly · Made with soil and sunlight.
+        © {new Date().getFullYear()} Thrive · Made with soil and sunlight.
       </footer>
     </div>
   );

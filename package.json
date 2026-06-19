@@ -1,11 +1,11 @@
 {
-  "name": "plotly",
+  "name": "thrive",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "deploy": "npm run build && powershell -Command \"Copy-Item dist\\server\\* dist\\client\\ -Recurse -Force; Move-Item dist\\client\\entry.mjs dist\\client\\_worker.js -Force; Remove-Item -Recurse -Force .wrangler; Remove-Item dist\\client\\wrangler.json -Force; Remove-Item dist\\server\\wrangler.json -Force\" && npx wrangler pages deploy dist/client --project-name=plotly --branch master",
+    "deploy": "npm run build && powershell -Command \"Copy-Item dist\\server\\* dist\\client\\ -Recurse -Force; Move-Item dist\\client\\entry.mjs dist\\client\\_worker.js -Force; Remove-Item -Recurse -Force .wrangler; Remove-Item dist\\client\\wrangler.json -Force; Remove-Item dist\\server\\wrangler.json -Force\" && npx wrangler pages deploy dist/client --project-name=thrive --branch master",
     "preview": "astro preview",
     "astro": "astro"
   },
