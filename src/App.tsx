@@ -6,6 +6,7 @@ import Landing from "@/components/pages/Landing";
 import Login from "@/components/pages/Login";
 import Register from "@/components/pages/Register";
 import Dashboard from "@/components/pages/Dashboard";
+import Analytics from "@/components/pages/Analytics";
 import Storefront from "@/components/pages/Storefront";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -53,6 +54,7 @@ function AppContent() {
       <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
       <Route path="/register" element={<GuestRoute><Register /></GuestRoute>} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
       <Route path="/g/:username" element={<Storefront />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
