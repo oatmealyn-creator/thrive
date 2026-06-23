@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { apiFetch } from "@/lib/api";
 import { motion, AnimatePresence } from "motion/react";
-import { Sprout, Plus, Share2, LogOut, Settings, Pencil, Trash2, Copy, Check, BarChart3 } from "lucide-react";
+import { Sprout, Plus, Share2, LogOut, Settings, Pencil, Trash2, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 import AddItemModal from "@/components/AddItemModal";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -20,7 +19,6 @@ export default function Dashboard() {
   const [showAdd, setShowAdd] = useState(false);
   const [editingItem, setEditingItem] = useState<any | null>(null);
   const [filter, setFilter] = useState("All");
-  const navigate = useNavigate();
   const [showSettings, setShowSettings] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -106,13 +104,6 @@ export default function Dashboard() {
                 </motion.div>
               )}
             </AnimatePresence>
-            <button
-              onClick={() => navigate("/analytics")}
-              className="p-2.5 rounded-full hover:bg-secondary"
-              aria-label="Analytics"
-            >
-              <BarChart3 className="w-5 h-5 text-foreground" />
-            </button>
             <button
               onClick={() => setShowSettings(true)}
               className="relative p-2.5 rounded-full hover:bg-secondary"
